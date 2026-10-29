@@ -1,4 +1,5 @@
 # tiny-timeout
+[![CI](https://github.com/hussain-alsaibai/tiny-timeout/actions/workflows/ci.yml/badge.svg)](https://github.com/hussain-alsaibai/tiny-timeout/actions/workflows/ci.yml)
 
 **Zero-dependency timeouts for Python that actually work.**
 
