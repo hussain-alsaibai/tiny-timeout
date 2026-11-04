@@ -473,8 +473,17 @@ def sleep_with_deadline(seconds: float, deadline: Deadline) -> bool:
     remaining = deadline.remaining()
     if remaining <= 0:
         return False
-    time.sleep(min(seconds, remaining))
-    return not deadline.expired()
+    if remaining >= seconds:
+        # The deadline allows the whole sleep: it will finish.
+        time.sleep(seconds)
+        return not deadline.expired()
+    # The deadline cuts the sleep short. A sleep is not guaranteed to last
+    # the full requested time -- Windows has ~15.6ms timer granularity and a
+    # loaded runner can wake early -- so "did the deadline expire?" is the
+    # wrong question. What matters is whether the FULL sleep happened, and
+    # it did not: we only asked for ``remaining``.
+    time.sleep(remaining)
+    return False
 
 
 @contextlib.contextmanager
